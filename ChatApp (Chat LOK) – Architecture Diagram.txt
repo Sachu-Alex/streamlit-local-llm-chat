@@ -1,0 +1,40 @@
+ 🧠 ChatApp (Chat LOK) – Architecture Diagram
+
+
+                    ┌────────────────────────────────┐
+                    │         🌐 User Browser        │
+                    │      (Runs Streamlit UI)       │
+                    └──────────────┬─────────────────┘
+                                   │
+                                   ▼
+                    ┌────────────────────────────────┐
+                    │      🎨 Streamlit Frontend      │
+                    │  - Displays chat UI            │
+                    │  - Sends user prompt to API    │
+                    │  - Receives and shows response │
+                    └──────────────┬─────────────────┘
+                                   │ HTTP POST
+                                   ▼
+                    ┌────────────────────────────────┐
+                    │         🚀 FastAPI Backend       │
+                    │  - Endpoint `/generate`         │
+                    │  - Forwards prompt to model     │
+                    │  - Returns model's response     │
+                    └──────────────┬─────────────────┘
+                                   │
+                                   ▼
+                    ┌────────────────────────────────┐
+                    │       🧠 Ollama LLM Engine       │
+                    │  - Runs local LLM (e.g. llama3) │
+                    │  - Generates the response       │
+                    └────────────────────────────────┘
+
+
+### 🔁 Workflow Summary:
+
+1. **User** types a message in the Streamlit app.
+2. **Streamlit** sends the prompt to the **FastAPI** backend at `http://localhost:8000/generate`.
+3. **FastAPI** sends the prompt to the **Ollama** engine running the local LLM (e.g. `llama3`).
+4. The **LLM** responds with text, which is passed back through FastAPI to Streamlit.
+5. **Streamlit UI** displays the nicely formatted response in the chat window.
+
